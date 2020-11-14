@@ -1,0 +1,17 @@
+- table:
+    schema: public
+    name: clients
+- table:
+    schema: public
+    name: flags
+  select_permissions:
+  - role: client
+    permission:
+      columns:
+      - description
+      - enabled
+      - label
+      - uid
+      filter:
+        client_id:
+          _eq: x-hasura-client-id
