@@ -13,6 +13,8 @@ services:
       JWT_SECRET: 3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R
   postgres:
     image: postgres:12
+    ports:
+    - "5432:5432"
     restart: always
     volumes:
     - db_data:/var/lib/postgresql/data
