@@ -1,0 +1,9 @@
+{
+    "type": "postgres",
+    "url": "postgres://postgres:postgrespassword@127.0.0.1:5432/postgres",
+    "useNewUrlParser": true,
+    "synchronize": true,
+    "logging": true,
+    "entities": ["src/entity/*.*"],
+    "useUnifiedTopology": true
+}
