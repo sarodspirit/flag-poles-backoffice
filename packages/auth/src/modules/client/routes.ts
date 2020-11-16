@@ -1,18 +1,24 @@
-import httpErrors from 'http-errors';
+import createError from 'http-errors';
+import { TOKEN_SCHEMA } from './schema';
 export default function clientHandler(server, options, next) {
-	server.post('/auth', async (req, res) => {
+	server.post('/token', TOKEN_SCHEMA,  async (req, res) => {
 		req.log.info('get token with key/secret');
 		const client = await server.db.clients.findOne({where: {key: req.body.key}});
 		if(client && await client.compareSecret(req.body.secret)){
 			return res.send(server.jwt.sign(await client.generateJWTPayload()));
 		}
-		return res.send(httpErrors.gone());
+
+		return res.send(createError(404));
 	});
-	server.post('/create', async(req, res)=>{
+	server.post('/', async(req, res)=>{
 		req.log.info('create client with secret');
 		const client = await server.db.clients.create({secret:req.body.secret, name: req.body.name});
-		await server.db.clients.save(client);
-		res.send(client);
+		if(client){
+			await server.db.clients.save(client);
+			return res.send(client);
+		}
+		return res.send(createError(404));
+
 	});
 	next();
 }

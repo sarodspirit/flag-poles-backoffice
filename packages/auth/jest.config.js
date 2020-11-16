@@ -9,5 +9,7 @@ module.exports = {
 		'^.+\\.(ts|tsx)$': 'ts-jest'
 	},
 	testMatch: ['**/test/**/*.test.ts'],
-	testEnvironment: 'node'
+	testEnvironment: 'node',
+	testPathIgnorePatterns: ['/lib/', '/node_modules/'],
+	collectCoverage: true,
 };
