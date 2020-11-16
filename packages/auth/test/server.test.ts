@@ -105,7 +105,6 @@ describe('Server', () => {
 				expect(dbMock.Client.generateJWTPayload).toHaveBeenCalledTimes(1);
 				expect(server.jwt.sign).toHaveBeenCalledWith('somePayload');
 				expect(res.payload).toBe('someJWTToken');
-
 				done(err);
 			}
 		);
