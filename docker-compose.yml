@@ -1,7 +1,20 @@
 version: '3.6'
 services:
+  auth:
+    build:
+      context: ./packages/auth
+    ports:
+    - "9000:9000"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      AUTH_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      JWT_SECRET: 3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R
   postgres:
     image: postgres:12
+    ports:
+    - "5432:5432"
     restart: always
     volumes:
     - db_data:/var/lib/postgresql/data
@@ -22,7 +35,8 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R"}'
 volumes:
   db_data:
 
