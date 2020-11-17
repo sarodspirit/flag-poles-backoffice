@@ -1,7 +1,7 @@
 import createError from 'http-errors';
-import { TOKEN_SCHEMA } from './schema';
+import { postTokenSchema, postCreateClientSchema } from './schema';
 export default function clientHandler(server, options, next) {
-	server.post('/token', TOKEN_SCHEMA,  async (req, res) => {
+	server.post('/token', {schema: postTokenSchema},  async (req, res) => {
 		req.log.info('get token with key/secret');
 		const client = await server.db.clients.findOne({where: {key: req.body.key}});
 		if(client && await client.compareSecret(req.body.secret)){
@@ -10,7 +10,7 @@ export default function clientHandler(server, options, next) {
 
 		return res.send(createError(404));
 	});
-	server.post('/', async(req, res)=>{
+	server.post('/',{schema:postCreateClientSchema}, async(req, res)=>{
 		req.log.info('create client with secret');
 		const client = await server.db.clients.create({secret:req.body.secret, name: req.body.name});
 		if(client){
